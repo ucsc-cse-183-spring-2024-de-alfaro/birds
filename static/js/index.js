@@ -9,13 +9,28 @@ app.data = {
     data: function() {
         return {
             sightings: [],
+            new_species: "",
         };
     },
     methods: {
         // Complete as you see fit.
-        my_function: function() {
-            // This is an example.
-            this.my_value += 1;
+        add_sighting: function() {
+            // This is time 1, the time of the button click.
+            let self = this; 
+            axios.post(add_sighting_url, {
+                bird_species: this.new_species,
+            }).then(function (r) {
+                // This is time 2, much later, when the server answer comes back. 
+                console.log("Got the id");
+                self.sightings.push({
+                    id: r.data.id,
+                    bird_species: app.vue.new_species,
+                    bird_count: 1,
+                });
+                self.new_species = "";
+            });
+            // This happens right after time 1, before time 2. 
+            console.log("I am a happy coder"); 
         },
     }
 };

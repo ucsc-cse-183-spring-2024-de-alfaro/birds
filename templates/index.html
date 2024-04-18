@@ -11,8 +11,10 @@
   <!-- Put here your Vue.js template -->
   <h1 class="title">Sightings</h1>
   <h2 class="subtitle">[[=salutation]]</h2>
-
-  <button class="button is-success">Add Sighting</button>
+  <div>
+    <button class="button is-success" @click="add_sighting">Add Sighting</button>
+    <input class="input" type="text" v-model="new_species" placeholder="Bird Species">
+  </div>
   <table class="table is-fullwidth is-striped">
     <tbody>
       <tr v-for="s in sightings">

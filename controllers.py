@@ -50,3 +50,10 @@ def load_sightings():
         dict(id=2, bird_species='Northern Cardinal', bird_count=2),
     ]
     return dict(sightings=rows)
+
+@action('add_sightings', method='POST')
+def add_sightings():
+    bird_species = request.json.get('bird_species')
+    bird_count = request.json.get('bird_count')
+    db.birds.insert(bird_species=bird_species, bird_count=bird_count)
+    return "ok"
