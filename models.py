@@ -23,7 +23,6 @@ def get_time():
 # Field types: 'string' (default), 'text', 'integer', 'double', ''boolean', 
 # 'date', 'time', 'datetime', ...
 db.define_table('birds',
-                Field('bird_name', 'string'),
                 Field('bird_species', 'string'),
                 Field('bird_count', 'integer', default=0),
                 Field('user_email', default=get_user_email),
