@@ -8,8 +8,7 @@ let app = {};
 app.data = {    
     data: function() {
         return {
-            // Complete as you see fit.
-            my_value: 1, // This is an example.
+            sightings: [],
         };
     },
     methods: {
@@ -24,8 +23,9 @@ app.data = {
 app.vue = Vue.createApp(app.data).mount("#app");
 
 app.load_data = function () {
-    axios.get(my_callback_url).then(function (r) {
-        app.vue.my_value = r.data.my_value;
+    axios.get(load_sightings_url).then(function (r) {
+        console.log(r.status);
+        app.vue.sightings = r.data.sightings;
     });
 }
 

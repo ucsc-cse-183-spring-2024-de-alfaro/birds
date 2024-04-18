@@ -37,18 +37,16 @@ url_signer = URLSigner(session)
 @action.uses('index.html', db, auth)
 def index():
     return dict(
-        # COMPLETE: return here any signed URLs you need.
-        my_callback_url = URL('my_callback'),
+        load_sightings_url = URL('load_sightings'),
+        inc_sightings_url = URL('inc_sightings'),
+        add_sightings_url = URL('add_sightings'),
+        salutation = "Hello, my dear friend!",
     )
 
-@action('my_callback')
-@action.uses() # Add here things like db, auth, etc.
-def my_callback():
-    # The return value should be a dictionary that will be sent as JSON.
-    return dict(my_value=3)
-
-@action('banana')
-@action.uses('banana.html', db, session, auth)
-def banana():
-    return dict()
-
+@action('load_sightings')
+def load_sightings():
+    rows = [
+        dict(id=1, bird_species='American Robin', bird_count=3),
+        dict(id=2, bird_species='Northern Cardinal', bird_count=2),
+    ]
+    return dict(sightings=rows)
