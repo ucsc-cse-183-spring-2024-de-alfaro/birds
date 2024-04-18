@@ -14,6 +14,22 @@ app.data = {
     },
     methods: {
         // Complete as you see fit.
+        find_sighting_idx: function(id) {
+            // Finds the index of an item in the list.
+            for (let i = 0; i < this.sightings.length; i++) {
+                if (this.sightings[i].id === id) {
+                    return i;
+                }
+            }
+            return null;
+        },
+        add_count: function(s_id) {
+            let self = this;
+            let i = self.find_sighting_idx(s_id);
+            axios.post(inc_sightings_url, { id: s_id }).then(function (r) {
+                self.sightings[i].bird_count = r.data.bird_count;
+            })
+        },
         add_sighting: function() {
             // This is time 1, the time of the button click.
             let self = this; 

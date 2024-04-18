@@ -56,3 +56,13 @@ def add_sightings():
     bird_count = request.json.get('bird_count')
     id = db.birds.insert(bird_species=bird_species, bird_count=bird_count)
     return dict(id=id)
+
+@action('inc_sightings', method='POST')
+@action.uses(db, session, auth.user)
+def inc_sightings():
+    id = request.json.get('id')
+    bird = db(db.birds.id == id).select().first()
+    assert bird.user_email == get_user_email() # Only the owner of the observation can inc it. 
+    bird.bird_count += 1
+    bird.update_record()
+    return dict(bird_count=bird.bird_count)

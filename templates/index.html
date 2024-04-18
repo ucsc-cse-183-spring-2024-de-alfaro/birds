@@ -18,7 +18,7 @@
   <table class="table is-fullwidth is-striped">
     <tbody>
       <tr v-for="s in sightings">
-        <td><i class="fa fa-plus-square"></i></td>
+        <td><i @click="add_count(s.id)" class="fa fa-plus-square"></i></td>
         <td> {{ s.bird_count }} </td>
         <td> {{ s.bird_species }} </td>
       </tr>
