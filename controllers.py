@@ -34,7 +34,7 @@ from .models import get_user_email
 url_signer = URLSigner(session)
 
 @action('index')
-@action.uses('index.html', db, auth)
+@action.uses('index.html', db, auth.user)
 def index():
     return dict(
         load_sightings_url = URL('load_sightings'),
@@ -44,16 +44,15 @@ def index():
     )
 
 @action('load_sightings')
+@action.uses(db, session, auth.user)
 def load_sightings():
-    rows = [
-        dict(id=1, bird_species='American Robin', bird_count=3),
-        dict(id=2, bird_species='Northern Cardinal', bird_count=2),
-    ]
+    rows = db(db.birds.user_email == get_user_email()).select().as_list()
     return dict(sightings=rows)
 
 @action('add_sightings', method='POST')
+@action.uses(db, session, auth.user)
 def add_sightings():
     bird_species = request.json.get('bird_species')
     bird_count = request.json.get('bird_count')
-    db.birds.insert(bird_species=bird_species, bird_count=bird_count)
-    return "ok"
+    id = db.birds.insert(bird_species=bird_species, bird_count=bird_count)
+    return dict(id=id)
