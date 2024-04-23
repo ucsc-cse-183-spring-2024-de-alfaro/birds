@@ -40,14 +40,15 @@ def index():
         load_sightings_url = URL('load_sightings'),
         inc_sightings_url = URL('inc_sightings'),
         add_sightings_url = URL('add_sightings'),
+        save_species_url = URL('save_species'),
         salutation = "Hello, my dear friend!",
     )
 
 @action('load_sightings')
 @action.uses(db, session, auth.user)
 def load_sightings():
-    rows = db(db.birds.user_email == get_user_email()).select().as_list()
-    return dict(sightings=rows)
+    sightings_list = db(db.birds.user_email == get_user_email()).select().as_list()
+    return dict(sightings=sightings_list)
 
 @action('add_sightings', method='POST')
 @action.uses(db, session, auth.user)
@@ -66,3 +67,20 @@ def inc_sightings():
     bird.bird_count += 1
     bird.update_record()
     return dict(bird_count=bird.bird_count)
+
+@action('save_species', method='POST')
+@action.uses(db, session, auth.user)
+def save_species():
+    id = request.json.get('id')
+    bird_species = request.json.get('bird_species')
+    bird = db(db.birds.id == id).select().first()
+    assert bird.user_email == get_user_email() # Important, otherwise one can rename other user's species. 
+    bird.bird_species = bird_species
+    bird.update_record()
+    return "ok"
+
+    
+    
+    
+    
+
